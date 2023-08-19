@@ -1,0 +1,64 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-auth.js";
+
+const signinbtn = document.querySelector('.signinbtn');
+const signupbtn = document.querySelector('.signupbtn');
+const formbox = document.querySelector('.form-box');
+const body = document.querySelector('body');
+
+signupbtn.onclick = function() {
+    formbox.classList.add('active');
+    body.classList.add('active');
+};
+
+signinbtn.onclick = function() {
+    formbox.classList.remove('active');
+    body.classList.remove('active');
+};
+
+const firebaseConfig = {
+    // Your Firebase config here
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth();
+
+let register_btn = document.getElementById("register_btn");
+
+register_btn.addEventListener("click", function() {
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+
+    createUserWithEmailAndPassword(auth, email.value, password.value)
+        .then((userCredential) => {
+            // Signed up successfully
+            const user = userCredential.user;
+            console.log("user==>", user);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("error=>", errorMessage);
+        });
+});
+
+let login_btn = document.getElementById("login_btn");
+
+login_btn.addEventListener("click", function() {
+    let login_email = document.getElementById("login_email");
+    let login_password = document.getElementById("login_password");
+
+    signInWithEmailAndPassword(auth, login_email.value, login_password.value)
+        .then((userCredential) => {
+            // Logged in successfully
+            const user = userCredential.user;
+            console.log("user=>", user);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("error=>", errorMessage);
+        });
+});
